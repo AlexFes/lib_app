@@ -1,0 +1,14 @@
+[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/controllers/PersonController.scala:34:25: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : play.api.data.Form[controllers.CreatePersonForm][0m
+[0m[[0m[31merror[0m] [0m[0m required: play.api.data.Form[controllers.CreateBookForm][0m
+[0m[[0m[31merror[0m] [0m[0m    Ok(views.html.index(personForm))[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/controllers/PersonController.scala:49:47: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : play.api.data.Form[controllers.CreatePersonForm][0m
+[0m[[0m[31merror[0m] [0m[0m required: play.api.data.Form[controllers.CreateBookForm][0m
+[0m[[0m[31merror[0m] [0m[0m        Future.successful(Ok(views.html.index(errorForm)))[0m
+[0m[[0m[31merror[0m] [0m[0m                                              ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/controllers/PersonController.scala:55:27: value PersonController is not a member of object controllers.routes[0m
+[0m[[0m[31merror[0m] [0m[0m          Redirect(routes.PersonController.index).flashing("success" -> "user.created")[0m
+[0m[[0m[31merror[0m] [0m[0m                          ^[0m
+[0m[[0m[31merror[0m] [0m[0mthree errors found[0m

@@ -1,0 +1,7 @@
+title = Title
+book_year = Book year
+genre = Genre
+author = Author
+author_year = Author year
+
+book.created = You have successfully created a book
