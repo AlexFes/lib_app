@@ -5,3 +5,4 @@ author = Author
 author_year = Author year
 
 book.created = You have successfully created a book
+schema.created = You have successfully created a schema

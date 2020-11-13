@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/alexfes/Documents/scala_app/conf/routes
-// @DATE:Mon Nov 09 20:17:22 MSK 2020
+// @DATE:Fri Nov 13 12:18:04 MSK 2020
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -28,6 +28,16 @@ package controllers.javascript {
       """
     )
   
+    // @LINE:9
+    def setSchema: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.BookController.setSchema",
+      """
+        function() {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "schema"})
+        }
+      """
+    )
+  
     // @LINE:6
     def index: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.BookController.index",
@@ -50,7 +60,7 @@ package controllers.javascript {
   
   }
 
-  // @LINE:11
+  // @LINE:12
   class ReverseAssets(_prefix: => String) {
 
     def _defaultPrefix: String = {
@@ -58,7 +68,7 @@ package controllers.javascript {
     }
 
   
-    // @LINE:11
+    // @LINE:12
     def versioned: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.Assets.versioned",
       """

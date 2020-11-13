@@ -47,4 +47,8 @@ class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implic
     def list(): Future[Seq[Book]] = db.run {
         books.result
     }
+
+    def createSchema = db.run {
+        books.schema.create
+    }
 }

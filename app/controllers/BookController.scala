@@ -61,6 +61,10 @@ class BookController @Inject()(repo: BookRepository,
             Ok(Json.toJson(books))
         }
     }
+
+    def setSchema = Action.async { implicit request =>
+        repo.createSchema.map { _ =>  Redirect(routes.BookController.index).flashing("success" -> "schema.created") }
+    }
 }
 
 case class CreateBookForm(title: String, book_year: Int, genre: String, author: String, author_year: Int)
