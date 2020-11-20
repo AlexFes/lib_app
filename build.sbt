@@ -6,7 +6,9 @@ lazy val root = (project in file("."))
     scalaVersion := "2.13.1",
     libraryDependencies ++= Seq(
       guice,
-      "com.typesafe.play" %% "play-slick" % "5.0.0",
+        "org.sangria-graphql" %% "sangria" % "2.0.0",
+        "org.sangria-graphql" %% "sangria-play-json" % "2.0.1",
+        "com.typesafe.play" %% "play-slick" % "5.0.0",
       "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0",
       "com.h2database" % "h2" % "1.4.199",
         "org.postgresql" % "postgresql" % "9.4-1206-jdbc42",

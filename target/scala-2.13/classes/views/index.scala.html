@@ -1,0 +1,22 @@
+@(book: Form[CreateBookForm])(implicit request: MessagesRequestHeader)
+
+@import helper._
+
+@request.flash.get("success").map { key =>
+   @request.messages(key)
+}
+
+@main("Library App") {
+  @form(routes.BookController.addBook()) {
+		@inputText(book("title"))
+		@inputText(book("book_year"))
+	  	@inputText(book("genre"))
+	  	@inputText(book("author"))
+	  	@inputText(book("author_year"))
+		@CSRF.formField
+
+		<div class="buttons">
+			<input type="submit" value="Add Person"/>
+		</div>
+	}
+}

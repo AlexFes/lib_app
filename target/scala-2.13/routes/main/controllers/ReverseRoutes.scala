@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/alexfes/Documents/scala_app/conf/routes
-// @DATE:Fri Nov 13 12:18:04 MSK 2020
+// @DATE:Fri Nov 20 09:04:27 MSK 2020
 
 import play.api.mvc.Call
 
@@ -17,10 +17,22 @@ package controllers {
     }
 
   
+    // @LINE:7
+    def addBook(): Call = {
+      
+      Call("POST", _prefix + { _defaultPrefix } + "book")
+    }
+  
     // @LINE:8
     def getBooks(): Call = {
       
       Call("GET", _prefix + { _defaultPrefix } + "books")
+    }
+  
+    // @LINE:11
+    def graphql(): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "graphql")
     }
   
     // @LINE:9
@@ -29,28 +41,28 @@ package controllers {
       Call("GET", _prefix + { _defaultPrefix } + "schema")
     }
   
+    // @LINE:12
+    def graphqlBody(): Call = {
+      
+      Call("POST", _prefix + { _defaultPrefix } + "graphql")
+    }
+  
     // @LINE:6
     def index(): Call = {
       
       Call("GET", _prefix)
     }
   
-    // @LINE:7
-    def addBook(): Call = {
-      
-      Call("POST", _prefix + { _defaultPrefix } + "book")
-    }
-  
   }
 
-  // @LINE:12
+  // @LINE:15
   class ReverseAssets(_prefix: => String) {
     def _defaultPrefix: String = {
       if (_prefix.endsWith("/")) "" else "/"
     }
 
   
-    // @LINE:12
+    // @LINE:15
     def versioned(file:Asset): Call = {
       implicit lazy val _rrc = new play.core.routing.ReverseRouteContext(Map(("path", "/public"))); _rrc
       Call("GET", _prefix + { _defaultPrefix } + "assets/" + implicitly[play.api.mvc.PathBindable[Asset]].unbind("file", file))

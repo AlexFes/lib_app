@@ -1,2 +1,7 @@
-[0m[[0m[0mdebug[0m] [0m[0mAcquiring lock on file /home/alexfes/Documents/scala_app/project/target/.sbt-compilation-infos/root-compile/.sbt-idea-lock ...[0m
-[0m[[0m[0mdebug[0m] [0m[0mReleasing lock on file /home/alexfes/Documents/scala_app/project/target/.sbt-compilation-infos/root-compile/.sbt-idea-lock.[0m
+[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/controllers/BookController.scala:14:28: object playJson is not a member of package sangria.marshalling[0m
+[0m[[0m[31merror[0m] [0m[0mimport sangria.marshalling.playJson._[0m
+[0m[[0m[31merror[0m] [0m[0m                           ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/controllers/BookController.scala:60:33: Type Option[play.api.libs.json.JsObject] cannot be used as a GraphQL input. Please consider defining an implicit instance of `InputUnmarshaller` for it.[0m
+[0m[[0m[31merror[0m] [0m[0m                Executor.execute(GraphqlSchema.BooksSchema, queryAst, repo,[0m
+[0m[[0m[31merror[0m] [0m[0m                                ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

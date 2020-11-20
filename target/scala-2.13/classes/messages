@@ -1,8 +1,8 @@
 title = Title
-book_year = Book year
+bookYear = Book year
 genre = Genre
 author = Author
-author_year = Author year
+authorYear = Author year
 
 book.created = You have successfully created a book
 schema.created = You have successfully created a schema

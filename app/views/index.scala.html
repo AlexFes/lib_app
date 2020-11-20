@@ -9,10 +9,10 @@
 @main("Library App") {
   @form(routes.BookController.addBook()) {
 		@inputText(book("title"))
-		@inputText(book("book_year"))
+		@inputText(book("bookYear"))
 	  	@inputText(book("genre"))
 	  	@inputText(book("author"))
-	  	@inputText(book("author_year"))
+	  	@inputText(book("authorYear"))
 		@CSRF.formField
 
 		<div class="buttons">

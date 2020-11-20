@@ -1,65 +1,11 @@
-2020-11-13 12:25:41,309 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-35 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
-2020-11-13 12:25:41,340 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-35 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+2020-11-20 09:17:07,686 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-11 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-11-20 09:17:08,096 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-11 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
 
     play.filters.csrf.CSRFFilter
     play.filters.headers.SecurityHeadersFilter
     play.filters.hosts.AllowedHostsFilter
 
-2020-11-13 12:25:41,351 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-35 - Application started (Dev) (no global state)
-2020-11-13 12:25:52,453 [ERROR] from play.api.http.DefaultHttpErrorHandler in application-akka.actor.default-dispatcher-6 - 
-
-! @7hmb5ba9a - Internal server error, for (GET) [/schema] ->
- 
-play.api.http.HttpErrorHandlerExceptions$$anon$1: Execution exception[[PSQLException: ERROR: relation "library" already exists]]
-	at play.api.http.HttpErrorHandlerExceptions$.throwableToUsefulException(HttpErrorHandler.scala:359)
-	at play.api.http.DefaultHttpErrorHandler.onServerError(HttpErrorHandler.scala:261)
-	at play.core.server.AkkaHttpServer$$anonfun$2.applyOrElse(AkkaHttpServer.scala:430)
-	at play.core.server.AkkaHttpServer$$anonfun$2.applyOrElse(AkkaHttpServer.scala:422)
-	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:453)
-	at akka.dispatch.BatchingExecutor$AbstractBatch.processBatch(BatchingExecutor.scala:56)
-	at akka.dispatch.BatchingExecutor$BlockableBatch.$anonfun$run$1(BatchingExecutor.scala:93)
-	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
-	at scala.concurrent.BlockContext$.withBlockContext(BlockContext.scala:94)
-	at akka.dispatch.BatchingExecutor$BlockableBatch.run(BatchingExecutor.scala:93)
-	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:48)
-	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:48)
-	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
-	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
-	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
-	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:175)
-Caused by: org.postgresql.util.PSQLException: ERROR: relation "library" already exists
-	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2182)
-	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:1911)
-	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:173)
-	at org.postgresql.jdbc2.AbstractJdbc2Statement.execute(AbstractJdbc2Statement.java:645)
-	at org.postgresql.jdbc2.AbstractJdbc2Statement.executeWithFlags(AbstractJdbc2Statement.java:495)
-	at org.postgresql.jdbc2.AbstractJdbc2Statement.execute(AbstractJdbc2Statement.java:488)
-	at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
-	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
-	at slick.jdbc.JdbcActionComponent$SchemaActionExtensionMethodsImpl$$anon$5.$anonfun$run$5(JdbcActionComponent.scala:287)
-	at slick.jdbc.JdbcActionComponent$SchemaActionExtensionMethodsImpl$$anon$5.$anonfun$run$5$adapted(JdbcActionComponent.scala:287)
-	at slick.jdbc.JdbcBackend$SessionDef.withPreparedStatement(JdbcBackend.scala:425)
-	at slick.jdbc.JdbcBackend$SessionDef.withPreparedStatement$(JdbcBackend.scala:420)
-	at slick.jdbc.JdbcBackend$BaseSession.withPreparedStatement(JdbcBackend.scala:489)
-	at slick.jdbc.JdbcActionComponent$SchemaActionExtensionMethodsImpl$$anon$5.$anonfun$run$4(JdbcActionComponent.scala:287)
-	at slick.jdbc.JdbcActionComponent$SchemaActionExtensionMethodsImpl$$anon$5.$anonfun$run$4$adapted(JdbcActionComponent.scala:287)
-	at scala.collection.IterableOnceOps.foreach(IterableOnce.scala:553)
-	at scala.collection.IterableOnceOps.foreach$(IterableOnce.scala:551)
-	at scala.collection.AbstractIterable.foreach(Iterable.scala:921)
-	at slick.jdbc.JdbcActionComponent$SchemaActionExtensionMethodsImpl$$anon$5.run(JdbcActionComponent.scala:287)
-	at slick.jdbc.JdbcActionComponent$SchemaActionExtensionMethodsImpl$$anon$5.run(JdbcActionComponent.scala:285)
-	at slick.jdbc.JdbcActionComponent$SimpleJdbcProfileAction.run(JdbcActionComponent.scala:28)
-	at slick.jdbc.JdbcActionComponent$SimpleJdbcProfileAction.run(JdbcActionComponent.scala:25)
-	at slick.basic.BasicBackend$DatabaseDef$$anon$3.liftedTree1$1(BasicBackend.scala:276)
-	at slick.basic.BasicBackend$DatabaseDef$$anon$3.run(BasicBackend.scala:276)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
-	at java.lang.Thread.run(Thread.java:748)
-2020-11-13 12:37:15,769 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-48 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
-2020-11-13 12:37:15,795 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-48 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
-
-    play.filters.csrf.CSRFFilter
-    play.filters.headers.SecurityHeadersFilter
-    play.filters.hosts.AllowedHostsFilter
-
-2020-11-13 12:37:15,803 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-48 - Application started (Dev) (no global state)
+2020-11-20 09:17:08,145 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-11 - Application started (Dev) (no global state)
+2020-11-20 09:26:08,490 [INFO] from play.core.server.AkkaHttpServer in play-dev-mode-shutdown-hook-1 - Stopping Akka HTTP server...
+2020-11-20 09:26:08,493 [INFO] from play.core.server.AkkaHttpServer in play-dev-mode-akka.actor.internal-dispatcher-32 - Terminating server binding for /0:0:0:0:0:0:0:0:9000
+2020-11-20 09:26:08,564 [INFO] from play.core.server.AkkaHttpServer in play-dev-mode-akka.actor.internal-dispatcher-34 - Running provided shutdown stop hooks

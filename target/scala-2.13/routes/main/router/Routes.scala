@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/alexfes/Documents/scala_app/conf/routes
-// @DATE:Fri Nov 13 12:18:04 MSK 2020
+// @DATE:Fri Nov 20 09:04:27 MSK 2020
 
 package router
 
@@ -15,7 +15,7 @@ class Routes(
   override val errorHandler: play.api.http.HttpErrorHandler, 
   // @LINE:6
   BookController_0: controllers.BookController,
-  // @LINE:12
+  // @LINE:15
   Assets_1: controllers.Assets,
   val prefix: String
 ) extends GeneratedRouter {
@@ -24,7 +24,7 @@ class Routes(
    def this(errorHandler: play.api.http.HttpErrorHandler,
     // @LINE:6
     BookController_0: controllers.BookController,
-    // @LINE:12
+    // @LINE:15
     Assets_1: controllers.Assets
   ) = this(errorHandler, BookController_0, Assets_1, "/")
 
@@ -43,6 +43,8 @@ class Routes(
     ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """book""", """controllers.BookController.addBook"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """books""", """controllers.BookController.getBooks"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """schema""", """controllers.BookController.setSchema"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """graphql""", """controllers.BookController.graphql"""),
+    ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """graphql""", """controllers.BookController.graphqlBody"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """assets/""" + "$" + """file<.+>""", """controllers.Assets.versioned(path:String = "/public", file:Asset)"""),
     Nil
   ).foldLeft(List.empty[(String,String,String)]) { (s,e) => e.asInstanceOf[Any] match {
@@ -123,11 +125,47 @@ class Routes(
     )
   )
 
+  // @LINE:11
+  private[this] lazy val controllers_BookController_graphql4_route = Route("GET",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("graphql")))
+  )
+  private[this] lazy val controllers_BookController_graphql4_invoker = createInvoker(
+    BookController_0.graphql,
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.BookController",
+      "graphql",
+      Nil,
+      "GET",
+      this.prefix + """graphql""",
+      """""",
+      Seq()
+    )
+  )
+
   // @LINE:12
-  private[this] lazy val controllers_Assets_versioned4_route = Route("GET",
+  private[this] lazy val controllers_BookController_graphqlBody5_route = Route("POST",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("graphql")))
+  )
+  private[this] lazy val controllers_BookController_graphqlBody5_invoker = createInvoker(
+    BookController_0.graphqlBody,
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.BookController",
+      "graphqlBody",
+      Nil,
+      "POST",
+      this.prefix + """graphql""",
+      """""",
+      Seq()
+    )
+  )
+
+  // @LINE:15
+  private[this] lazy val controllers_Assets_versioned6_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("assets/"), DynamicPart("file", """.+""",false)))
   )
-  private[this] lazy val controllers_Assets_versioned4_invoker = createInvoker(
+  private[this] lazy val controllers_Assets_versioned6_invoker = createInvoker(
     Assets_1.versioned(fakeValue[String], fakeValue[Asset]),
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -168,10 +206,22 @@ class Routes(
         controllers_BookController_setSchema3_invoker.call(BookController_0.setSchema)
       }
   
+    // @LINE:11
+    case controllers_BookController_graphql4_route(params@_) =>
+      call { 
+        controllers_BookController_graphql4_invoker.call(BookController_0.graphql)
+      }
+  
     // @LINE:12
-    case controllers_Assets_versioned4_route(params@_) =>
+    case controllers_BookController_graphqlBody5_route(params@_) =>
+      call { 
+        controllers_BookController_graphqlBody5_invoker.call(BookController_0.graphqlBody)
+      }
+  
+    // @LINE:15
+    case controllers_Assets_versioned6_route(params@_) =>
       call(Param[String]("path", Right("/public")), params.fromPath[Asset]("file", None)) { (path, file) =>
-        controllers_Assets_versioned4_invoker.call(Assets_1.versioned(path, file))
+        controllers_Assets_versioned6_invoker.call(Assets_1.versioned(path, file))
       }
   }
 }

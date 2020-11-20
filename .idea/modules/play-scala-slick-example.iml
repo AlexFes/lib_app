@@ -20,6 +20,7 @@
     <orderEntry type="library" name="sbt: aopalliance:aopalliance:1.0:jar" level="project" />
     <orderEntry type="library" name="sbt: ch.qos.logback:logback-classic:1.2.3:jar" level="project" />
     <orderEntry type="library" name="sbt: ch.qos.logback:logback-core:1.2.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.chuusai:shapeless_2.13:2.3.3:jar" level="project" />
     <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-annotations:2.10.4:jar" level="project" />
     <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-core:2.10.4:jar" level="project" />
     <orderEntry type="library" name="sbt: com.fasterxml.jackson.core:jackson-databind:2.10.4:jar" level="project" />
@@ -113,8 +114,14 @@
     <orderEntry type="library" name="sbt: org.lz4:lz4-java:1.7.1:jar" level="project" />
     <orderEntry type="library" scope="TEST" name="sbt: org.mockito:mockito-core:3.2.4:jar" level="project" />
     <orderEntry type="library" scope="TEST" name="sbt: org.objenesis:objenesis:2.6:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.parboiled:parboiled_2.13:2.1.8:jar" level="project" />
     <orderEntry type="library" name="sbt: org.postgresql:postgresql:9.4-1206-jdbc42:jar" level="project" />
     <orderEntry type="library" name="sbt: org.reactivestreams:reactive-streams:1.0.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.sangria-graphql:macro-visit_2.13:0.1.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.sangria-graphql:sangria-marshalling-api_2.13:1.0.4:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.sangria-graphql:sangria-play-json_2.13:2.0.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.sangria-graphql:sangria-streaming-api_2.13:1.0.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.sangria-graphql:sangria_2.13:2.0.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-collection-compat_2.13:2.0.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-java8-compat_2.13:0.9.1:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-parser-combinators_2.13:1.1.2:jar" level="project" />

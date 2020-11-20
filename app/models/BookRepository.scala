@@ -19,31 +19,25 @@ class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implic
     private class BooksTable(tag: Tag) extends Table[Book](tag, "library") {
         def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
         def title = column[String]("title")
-        def book_year = column[Int]("book_year")
+        def bookYear = column[Int]("bookYear")
         def genre = column[String]("genre")
         def author = column[String]("author")
-        def author_year = column[Int]("author_year")
-        def * = (id, title, book_year, genre, author, author_year) <> ((Book.apply _).tupled, Book.unapply)
+        def authorYear = column[Int]("authorYear")
+        def * = (id, title, bookYear, genre, author, authorYear) <> ((Book.apply _).tupled, Book.unapply)
     }
 
-    /**
-     * The starting point for all queries on the people table.
-     */
     private val books = TableQuery[BooksTable]
 
-    def create(title: String, book_year: Int, genre: String, author: String, author_year: Int) = db.run {
-        (books.map(b => (b.title, b.book_year, b.genre, b.author, b.author_year))
+    def create(title: String, bookYear: Int, genre: String, author: String, authorYear: Int) = db.run {
+        (books.map(b => (b.title, b.bookYear, b.genre, b.author, b.authorYear))
           // get id generated for the book
           returning books.map(_.id)
           // combine original parameters with the new id
           into ((bookInfo, id) => Book(id, bookInfo._1, bookInfo._2, bookInfo._3, bookInfo._4, bookInfo._5))
           // insert in db
-        ) += (title, book_year, genre, author, author_year)
+        ) += (title, bookYear, genre, author, authorYear)
     }
 
-    /**
-     * List all books
-     */
     def list(): Future[Seq[Book]] = db.run {
         books.result
     }
