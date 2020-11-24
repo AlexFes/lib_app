@@ -21,17 +21,17 @@ class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implic
         def title = column[String]("title")
         def year = column[Int]("year")
         def genre = column[String]("genre")
-        def * = (id, title, year, genre) <> ((Book.apply _).tupled, Book.unapply)
+        def * = (title, year, genre, id) <> ((Book.apply _).tupled, Book.unapply)
     }
 
     private class AuthorsTable(tag: Tag) extends Table[Author](tag, "authors") {
         def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
         def name = column[String]("name")
         def year = column[Int]("year")
-        def * = (id, name, year) <> ((Author.apply _).tupled, Author.unapply)
+        def * = (name, year, id) <> ((Author.apply _).tupled, Author.unapply)
     }
 
-    private class BookAuthorMap(tag: Tag) extends Table[(Long, Long)](tag, "map") {
+    private class BookAuthorRelation(tag: Tag) extends Table[(Long, Long)](tag, "relation") {
         def book = column[Long]("book")
         def author = column[Long]("author")
         def * = (book, author)
@@ -39,17 +39,7 @@ class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implic
 
     private val books = TableQuery[BooksTable]
     private val authors = TableQuery[AuthorsTable]
-    private val map = TableQuery[BookAuthorMap]
-
-//    def create(title: String, bookYear: Int, genre: String, author: String, authorYear: Int) = db.run {
-//        (books.map(b => (b.title, b.bookYear, b.genre, b.author, b.authorYear))
-//          // get id generated for the book
-//          returning books.map(_.id)
-//          // combine original parameters with the new id
-//          into ((bookInfo, id) => Book(id, bookInfo._1, bookInfo._2, bookInfo._3, bookInfo._4, bookInfo._5))
-//          // insert in db
-//        ) += (title, bookYear, genre, author, authorYear)
-//    }
+    private val relation = TableQuery[BookAuthorRelation]
 
     def getBooks: Future[Seq[Book]] = db.run {
         books.result
@@ -59,9 +49,17 @@ class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implic
         authors.result
     }
 
+    def createAuthor(name: String, year: Int) = db.run {
+        authors returning authors.map(_.id) into ((author, id) => Author(author.name, author.year, id)) += Author(name, year)
+    }
+
+    def createBook(title: String, year: Int, genre: String) = db.run {
+        books returning books.map(_.id) into ((book, id) => Book(book.title, book.year, book.genre, id)) += Book(title, year, genre)
+    }
+
     def createSchema = db.run {
         books.schema.create andThen
         authors.schema.create andThen
-        map.schema.create
+        relation.schema.create
     }
 }

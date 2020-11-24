@@ -27,10 +27,21 @@ object GraphqlSchema {
     val QueryType = ObjectType[BookRepository, Unit](
         "Query",
         fields[BookRepository, Unit](
-            Field("allBooks", ListType(BookType), resolve = ctx => ctx.ctx.getBooks),
-            Field("allAuthors", ListType(AuthorType), resolve = ctx => ctx.ctx.getAuthors)
+            Field("allBooks", ListType(BookType), resolve = c => c.ctx.getBooks),
+            Field("allAuthors", ListType(AuthorType), resolve = c => c.ctx.getAuthors)
         )
     )
 
-    val BooksSchema = Schema(QueryType)
+    val Mutation = ObjectType[BookRepository, Unit](
+        "Mutation",
+        fields[BookRepository, Unit](
+            Field("createAuthor",
+                AuthorType,
+                arguments = List(Argument("name", StringType), Argument("year", IntType)),
+                resolve = c => c.ctx.createAuthor(c.arg(Argument("name", StringType)), c.arg(Argument("year", IntType)))
+            )
+        )
+    )
+
+    val BooksSchema = Schema(QueryType, Some(Mutation))
 }
