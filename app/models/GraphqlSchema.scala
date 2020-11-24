@@ -2,7 +2,6 @@ package models
 
 import sangria.schema.{Field, ListType, ObjectType}
 import sangria.schema._
-import sangria.macros.derive._
 
 object GraphqlSchema {
     val BookType = ObjectType[Unit, Book](
@@ -27,8 +26,8 @@ object GraphqlSchema {
     val QueryType = ObjectType[BookRepository, Unit](
         "Query",
         fields[BookRepository, Unit](
-            Field("allBooks", ListType(BookType), resolve = c => c.ctx.getBooks),
-            Field("allAuthors", ListType(AuthorType), resolve = c => c.ctx.getAuthors)
+            Field("books", ListType(BookType), resolve = c => c.ctx.getBooks),
+            Field("authors", ListType(AuthorType), resolve = c => c.ctx.getAuthors)
         )
     )
 
@@ -39,6 +38,16 @@ object GraphqlSchema {
                 AuthorType,
                 arguments = List(Argument("name", StringType), Argument("year", IntType)),
                 resolve = c => c.ctx.createAuthor(c.arg(Argument("name", StringType)), c.arg(Argument("year", IntType)))
+            ),
+            Field("createBook",
+                BookType,
+                arguments = List(
+                    Argument("title", StringType),
+                    Argument("year", IntType),
+                    Argument("genre", StringType),
+                    Argument("authors", LongType)
+                ),
+                resolve = c => c.ctx.createBook(c.arg(Argument("title", StringType)), c.arg(Argument("year", IntType)), c.arg(Argument("genre", StringType)), List(c.arg(Argument("authors", LongType))))
             )
         )
     )
