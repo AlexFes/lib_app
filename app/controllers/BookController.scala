@@ -31,7 +31,8 @@ class BookController @Inject()(repo: BookRepository,
     }
 
     def index = Action { implicit request =>
-        Ok(views.html.index(bookForm))
+        // Ok(views.html.index(bookForm))
+        Ok(views.html.graphiql())
     }
 
     def graphql = Action { implicit request =>
@@ -70,24 +71,24 @@ class BookController @Inject()(repo: BookRepository,
                 throw error
         }
 
-    def addBook = Action.async { implicit request =>
-        // Bind the form first, then fold the result, passing a function to handle errors, and a function to handle success
-        bookForm.bindFromRequest.fold(
-            // error case
-            errorForm => {
-                Future.successful(Ok(views.html.index(errorForm)))
-            },
-            // create the book
-            book => {
-                repo.create(book.title, book.bookYear, book.genre, book.author, book.authorYear).map { _ =>
-                    Redirect(routes.BookController.index).flashing("success" -> "book.created")
-                }
-            }
-        )
-    }
+//    def addBook = Action.async { implicit request =>
+//        // Bind the form first, then fold the result, passing a function to handle errors, and a function to handle success
+//        bookForm.bindFromRequest.fold(
+//            // error case
+//            errorForm => {
+//                Future.successful(Ok(views.html.index(errorForm)))
+//            },
+//            // create the book
+//            book => {
+//                repo.create(book.title, book.bookYear, book.genre, book.author, book.authorYear).map { _ =>
+//                    Redirect(routes.BookController.index).flashing("success" -> "book.created")
+//                }
+//            }
+//        )
+//    }
 
     def getBooks = Action.async { implicit request =>
-        repo.list().map { books =>
+        repo.getBooks.map { books =>
             Ok(Json.toJson(books))
         }
     }

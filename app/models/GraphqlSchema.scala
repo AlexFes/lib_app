@@ -10,17 +10,25 @@ object GraphqlSchema {
         fields[Unit, Book](
             Field("id", LongType, resolve = _.value.id),
             Field("title", StringType, resolve = _.value.title),
-            Field("bookYear", IntType, resolve = _.value.bookYear),
-            Field("genre", StringType, resolve = _.value.genre),
-            Field("author", StringType, resolve = _.value.author),
-            Field("authorYear", IntType, resolve = _.value.authorYear)
+            Field("year", IntType, resolve = _.value.year),
+            Field("genre", StringType, resolve = _.value.genre)
+        )
+    )
+
+    val AuthorType = ObjectType[Unit, Author](
+        "Author",
+        fields[Unit, Author](
+            Field("id", LongType, resolve = _.value.id),
+            Field("name", StringType, resolve = _.value.name),
+            Field("year", IntType, resolve = _.value.year)
         )
     )
 
     val QueryType = ObjectType[BookRepository, Unit](
         "Query",
         fields[BookRepository, Unit](
-            Field("allBooks", ListType(BookType), resolve = ctx => ctx.ctx.list())
+            Field("allBooks", ListType(BookType), resolve = ctx => ctx.ctx.getBooks),
+            Field("allAuthors", ListType(AuthorType), resolve = ctx => ctx.ctx.getAuthors)
         )
     )
 

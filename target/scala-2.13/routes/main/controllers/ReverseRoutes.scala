@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/alexfes/Documents/scala_app/conf/routes
-// @DATE:Fri Nov 20 09:04:27 MSK 2020
+// @DATE:Mon Nov 23 17:37:19 MSK 2020
 
 import play.api.mvc.Call
 
@@ -16,12 +16,6 @@ package controllers {
       if (_prefix.endsWith("/")) "" else "/"
     }
 
-  
-    // @LINE:7
-    def addBook(): Call = {
-      
-      Call("POST", _prefix + { _defaultPrefix } + "book")
-    }
   
     // @LINE:8
     def getBooks(): Call = {

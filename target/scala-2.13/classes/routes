@@ -4,7 +4,7 @@
 
 # Home page
 GET     /                         controllers.BookController.index
-POST    /book                     controllers.BookController.addBook
+#POST    /book                     controllers.BookController.addBook
 GET     /books                    controllers.BookController.getBooks
 GET    /schema                    controllers.BookController.setSchema
 

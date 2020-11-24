@@ -1,7 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/controllers/BookController.scala:14:28: object playJson is not a member of package sangria.marshalling[0m
-[0m[[0m[31merror[0m] [0m[0mimport sangria.marshalling.playJson._[0m
-[0m[[0m[31merror[0m] [0m[0m                           ^[0m
-[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/controllers/BookController.scala:60:33: Type Option[play.api.libs.json.JsObject] cannot be used as a GraphQL input. Please consider defining an implicit instance of `InputUnmarshaller` for it.[0m
-[0m[[0m[31merror[0m] [0m[0m                Executor.execute(GraphqlSchema.BooksSchema, queryAst, repo,[0m
-[0m[[0m[31merror[0m] [0m[0m                                ^[0m
-[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
+[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/views/index.scala.html:10:31: value addBook is not a member of controllers.ReverseBookController[0m
+[0m[[0m[31merror[0m] [0m[0m  @form(routes.BookController.addBook()) {[0m
+[0m[[0m[31merror[0m] [0m[0m                              ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m

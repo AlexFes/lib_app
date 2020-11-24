@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/alexfes/Documents/scala_app/conf/routes
-// @DATE:Fri Nov 20 09:04:27 MSK 2020
+// @DATE:Mon Nov 23 17:37:19 MSK 2020
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -17,16 +17,6 @@ package controllers.javascript {
       if (_prefix.endsWith("/")) "" else "/"
     }
 
-  
-    // @LINE:7
-    def addBook: JavaScriptReverseRoute = JavaScriptReverseRoute(
-      "controllers.BookController.addBook",
-      """
-        function() {
-          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "book"})
-        }
-      """
-    )
   
     // @LINE:8
     def getBooks: JavaScriptReverseRoute = JavaScriptReverseRoute(

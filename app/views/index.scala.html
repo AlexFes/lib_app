@@ -5,7 +5,7 @@
 @request.flash.get("success").map { key =>
    @request.messages(key)
 }
-
+	@*
 @main("Library App") {
   @form(routes.BookController.addBook()) {
 		@inputText(book("title"))
@@ -20,3 +20,4 @@
 		</div>
 	}
 }
+	*@
