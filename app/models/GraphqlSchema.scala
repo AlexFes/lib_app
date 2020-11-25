@@ -1,6 +1,7 @@
 package models
 
 import sangria.schema.{Field, ListType, ObjectType}
+import sangria.execution.deferred.{DeferredResolver, Fetcher, HasId}
 import sangria.schema._
 
 object GraphqlSchema {
@@ -23,11 +24,34 @@ object GraphqlSchema {
         )
     )
 
+    implicit val bookHasId = HasId[Book, Long](_.id)
+    implicit val authorHasId = HasId[Author, Long](_.id)
+
+    val booksFetcher = Fetcher(
+        (ctx: BookRepository, ids: Seq[Long]) => ctx.getBooks(ids)
+    )
+    val authorsFetcher = Fetcher(
+        (ctx: BookRepository, ids: Seq[Long]) => ctx.getAuthors(ids)
+    )
+
+    val Resolver = DeferredResolver.fetchers(booksFetcher, authorsFetcher)
+
+
     val QueryType = ObjectType[BookRepository, Unit](
         "Query",
         fields[BookRepository, Unit](
-            Field("books", ListType(BookType), resolve = c => c.ctx.getBooks),
-            Field("authors", ListType(AuthorType), resolve = c => c.ctx.getAuthors)
+            Field("allBooks", ListType(BookType), resolve = c => c.ctx.getBooks()),
+            Field("books",
+                ListType(BookType),
+                arguments = List(Argument("ids", ListInputType(LongType))),
+                resolve = c => booksFetcher.deferSeq(c.arg[Seq[Long]]("ids"))
+            ),
+            Field("allAuthors", ListType(AuthorType), resolve = c => c.ctx.getAuthors()),
+            Field("authors",
+                ListType(AuthorType),
+                arguments = List(Argument("ids", ListInputType(LongType))),
+                resolve = c => authorsFetcher.deferSeq(c.arg[Seq[Long]]("ids"))
+            )
         )
     )
 

@@ -60,7 +60,9 @@ class BookController @Inject()(repo: BookRepository,
             case Success(queryAst) =>
                 Executor.execute(GraphqlSchema.BooksSchema, queryAst, repo,
                     operationName = operation,
-                    variables = variables getOrElse Json.obj())
+                    variables = variables getOrElse Json.obj(),
+                    deferredResolver = GraphqlSchema.Resolver
+                )
                   .map(Ok(_))
                   .recover {
                       case error: QueryAnalysisError => BadRequest(error.resolveError)
@@ -71,24 +73,8 @@ class BookController @Inject()(repo: BookRepository,
                 throw error
         }
 
-//    def addBook = Action.async { implicit request =>
-//        // Bind the form first, then fold the result, passing a function to handle errors, and a function to handle success
-//        bookForm.bindFromRequest.fold(
-//            // error case
-//            errorForm => {
-//                Future.successful(Ok(views.html.index(errorForm)))
-//            },
-//            // create the book
-//            book => {
-//                repo.create(book.title, book.bookYear, book.genre, book.author, book.authorYear).map { _ =>
-//                    Redirect(routes.BookController.index).flashing("success" -> "book.created")
-//                }
-//            }
-//        )
-//    }
-
     def getBooks = Action.async { implicit request =>
-        repo.getBooks.map { books =>
+        repo.getBooks().map { books =>
             Ok(Json.toJson(books))
         }
     }

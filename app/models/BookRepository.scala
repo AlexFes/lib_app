@@ -41,12 +41,14 @@ class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implic
     private val authors = TableQuery[AuthorsTable]
     private val relation = TableQuery[BookAuthorRelation]
 
-    def getBooks: Future[Seq[Book]] = db.run {
-        books.result
+    def getBooks(ids: Seq[Long] = Seq()): Future[Seq[Book]] = ids match {
+        case Seq() => db.run(books.result)
+        case s: Seq[Long] => db.run(books.filter(_.id inSet s).result)
     }
 
-    def getAuthors: Future[Seq[Author]] = db.run {
-        authors.result
+    def getAuthors(ids: Seq[Long] = Seq()): Future[Seq[Author]] = ids match {
+        case Seq() => db.run(authors.result)
+        case s: Seq[Long] => db.run(authors.filter(_.id inSet s).result)
     }
 
     def createAuthor(name: String, year: Int) = db.run {
