@@ -37,7 +37,7 @@ object GraphqlSchema {
             Field("createAuthor",
                 AuthorType,
                 arguments = List(Argument("name", StringType), Argument("year", IntType)),
-                resolve = c => c.ctx.createAuthor(c.arg(Argument("name", StringType)), c.arg(Argument("year", IntType)))
+                resolve = c => c.ctx.createAuthor(c.arg[String]("name"), c.arg[Int]("year"))
             ),
             Field("createBook",
                 BookType,
@@ -45,9 +45,14 @@ object GraphqlSchema {
                     Argument("title", StringType),
                     Argument("year", IntType),
                     Argument("genre", StringType),
-                    Argument("authors", LongType)
+                    Argument("authors", ListInputType(LongType))
                 ),
-                resolve = c => c.ctx.createBook(c.arg(Argument("title", StringType)), c.arg(Argument("year", IntType)), c.arg(Argument("genre", StringType)), List(c.arg(Argument("authors", LongType))))
+                resolve = c => c.ctx.createBook(
+                    c.arg[String]("title"),
+                    c.arg[Int]("year"),
+                    c.arg[String]("genre"),
+                    c.arg[Seq[Long]]("authors")
+                )
             )
         )
     )

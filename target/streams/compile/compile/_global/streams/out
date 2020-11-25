@@ -1,9 +1,2 @@
-[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/models/BookRepository.scala:62:12: inferred type arguments [Boolean] do not conform to method filter's type parameter bounds [T <: slick.lifted.Rep[_]][0m
-[0m[[0m[31merror[0m] [0m[0m          .filter(a => bookAuthors.contains(a.name))[0m
-[0m[[0m[31merror[0m] [0m[0m           ^[0m
-[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/models/BookRepository.scala:62:21: type mismatch;[0m
-[0m[[0m[31merror[0m] [0m[0m found   : BookRepository.this.AuthorsTable => Boolean[0m
-[0m[[0m[31merror[0m] [0m[0m required: BookRepository.this.AuthorsTable => T[0m
-[0m[[0m[31merror[0m] [0m[0m          .filter(a => bookAuthors.contains(a.name))[0m
-[0m[[0m[31merror[0m] [0m[0m                    ^[0m
-[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
+[0m[[0m[0mdebug[0m] [0m[0mAcquiring lock on file /home/alexfes/Documents/scala_app/project/target/.sbt-compilation-infos/root-compile/.sbt-idea-lock ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mReleasing lock on file /home/alexfes/Documents/scala_app/project/target/.sbt-compilation-infos/root-compile/.sbt-idea-lock.[0m

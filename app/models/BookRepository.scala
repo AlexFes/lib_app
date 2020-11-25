@@ -53,7 +53,7 @@ class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implic
         authors returning authors.map(_.id) into ((author, id) => Author(author.name, author.year, id)) += Author(name, year)
     }
 
-    def createBook(title: String, year: Int, genre: String, authorIds: List[Long]) = {
+    def createBook(title: String, year: Int, genre: String, authorIds: Seq[Long]) = {
         val res = for {
             bookId <- books.returning(books.map(_.id)) += Book(title, year, genre)
             _ <- relation ++= authorIds.map((bookId, _))
