@@ -9,14 +9,14 @@ import scala.concurrent.{ Future, ExecutionContext }
 @Singleton
 class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
     // JdbcProfile for this provider
-    private val dbConfig = dbConfigProvider.get[JdbcProfile]
+    val dbConfig = dbConfigProvider.get[JdbcProfile]
 
     // brings db into scope, for actual db operations
     // brings the Slick DSL into scope, to define the table and other queries
     import dbConfig._
     import profile.api._
 
-    private class BooksTable(tag: Tag) extends Table[Book](tag, "books") {
+    class BooksTable(tag: Tag) extends Table[Book](tag, "books") {
         def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
         def title = column[String]("title")
         def year = column[Int]("year")
@@ -24,26 +24,32 @@ class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implic
         def * = (title, year, genre, id) <> ((Book.apply _).tupled, Book.unapply)
     }
 
-    private val books = TableQuery[BooksTable]
+    val books = TableQuery[BooksTable]
 
-    private class AuthorsTable(tag: Tag) extends Table[Author](tag, "authors") {
+    class AuthorsTable(tag: Tag) extends Table[Author](tag, "authors") {
         def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
         def name = column[String]("name")
         def year = column[Int]("year")
         def * = (name, year, id) <> ((Author.apply _).tupled, Author.unapply)
     }
 
-    private val authors = TableQuery[AuthorsTable]
+    val authors = TableQuery[AuthorsTable]
 
-    private class BookAuthorRelation(tag: Tag) extends Table[(Long, Long)](tag, "relation") {
+    class BookAuthorRelation(tag: Tag) extends Table[(Long, Long)](tag, "relation") {
         def book = column[Long]("book")
         def author = column[Long]("author")
-        def bookFK = foreignKey("book_FK", book, books)(_.id)
-        def authorFK = foreignKey("author_FK", author, authors)(_.id)
+
+        def bookFK = foreignKey("book_FK", book, books)(_.id,
+            onDelete = ForeignKeyAction.Cascade
+        )
+        def authorFK = foreignKey("author_FK", author, authors)(_.id,
+            onDelete = ForeignKeyAction.Cascade
+        )
+
         def * = (book, author)
     }
 
-    private val relation = TableQuery[BookAuthorRelation]
+    val relation = TableQuery[BookAuthorRelation]
 
     def getBooks(ids: Seq[Long] = Seq()): Future[Seq[Book]] = ids match {
         case Seq() => db.run(books.result)

@@ -27,7 +27,7 @@ object GraphqlSchema {
                 resolve = c => {
                     booksFetcher.deferRelSeqMany(
                         booksForAuthorsRelation,
-                        c.value.id.asInstanceOf[Seq[Long]]
+                        Seq[Long](c.value.id)
                     )
                 }
             )
