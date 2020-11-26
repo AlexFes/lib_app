@@ -2,26 +2,26 @@ package models
 
 import sangria.schema.{Field, ListType, ObjectType}
 import sangria.execution.deferred.{DeferredResolver, Fetcher, HasId, Relation, RelationIds}
-import sangria.macros.derive.AddFields
+import sangria.macros.derive._
 import sangria.schema._
 
 object GraphqlSchema {
-    lazy val BookType = ObjectType[Unit, Book](
-        "Book",
-        fields[Unit, Book](
-            Field("id", LongType, resolve = _.value.id),
-            Field("title", StringType, resolve = _.value.title),
-            Field("year", IntType, resolve = _.value.year),
-            Field("genre", StringType, resolve = _.value.genre)
+    lazy val BookType: ObjectType[Unit, Book] = deriveObjectType[Unit, Book](
+        AddFields(
+            Field("authors",
+                ListType(AuthorType),
+                resolve = c => {
+                    authorsFetcher.deferRelSeqMany(
+                        authorsForBooksRelation,
+                        Seq[Long](c.value.id)
+                    )
+                }
+            )
         )
     )
 
-    lazy val AuthorType = ObjectType[Unit, Author](
-        "Author",
-        fields[Unit, Author](
-            Field("id", LongType, resolve = _.value.id),
-            Field("name", StringType, resolve = _.value.name),
-            Field("year", IntType, resolve = _.value.year),
+    lazy val AuthorType: ObjectType[Unit, Author] = deriveObjectType[Unit, Author](
+        AddFields(
             Field("books",
                 ListType(BookType),
                 resolve = c => {
@@ -35,6 +35,7 @@ object GraphqlSchema {
     )
 
     val booksForAuthorsRelation = Relation[Book, (Seq[Long], Book), Long]("forAuthors", _._1, _._2)
+    val authorsForBooksRelation = Relation[Author, (Seq[Long], Author), Long]("forBooks", _._1, _._2)
 
     implicit val bookHasId = HasId[Book, Long](_.id)
     implicit val authorHasId = HasId[Author, Long](_.id)
@@ -43,8 +44,9 @@ object GraphqlSchema {
         (ctx: BookRepository, ids: Seq[Long]) => ctx.getBooks(ids),
         (ctx: BookRepository, ids: RelationIds[Book]) => ctx.getForAuthors(ids(booksForAuthorsRelation))
     )
-    val authorsFetcher = Fetcher(
-        (ctx: BookRepository, ids: Seq[Long]) => ctx.getAuthors(ids)
+    val authorsFetcher: Fetcher[BookRepository, Author, (Seq[Long], Author), Long] = Fetcher.relCaching(
+        (ctx: BookRepository, ids: Seq[Long]) => ctx.getAuthors(ids),
+        (ctx: BookRepository, ids: RelationIds[Author]) => ctx.getForBooks(ids(authorsForBooksRelation))
     )
 
     val Resolver = DeferredResolver.fetchers(booksFetcher, authorsFetcher)

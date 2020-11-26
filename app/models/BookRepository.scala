@@ -8,11 +8,8 @@ import scala.concurrent.{ Future, ExecutionContext }
 
 @Singleton
 class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
-    // JdbcProfile for this provider
     val dbConfig = dbConfigProvider.get[JdbcProfile]
 
-    // brings db into scope, for actual db operations
-    // brings the Slick DSL into scope, to define the table and other queries
     import dbConfig._
     import profile.api._
 
@@ -70,6 +67,17 @@ class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implic
     def getAuthors(ids: Seq[Long] = Seq()): Future[Seq[Author]] = ids match {
         case Seq() => db.run(authors.result)
         case s: Seq[Long] => db.run(authors.filter(_.id inSet s).result)
+    }
+
+    def getForBooks(ids: Seq[Long]) = {
+        val join = relation.filter(_.book inSet ids)
+          .join(authors).on(_.author === _.id).result
+
+        db.run(join).map { result =>
+            result.groupBy(_._2.id).toVector.map {
+                case (_, authors) => authors.map(_._1._1) -> authors.head._2
+            }
+        }
     }
 
     def createAuthor(name: String, year: Int) = db.run {
