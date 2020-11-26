@@ -1,11 +1,12 @@
 package models
 
 import sangria.schema.{Field, ListType, ObjectType}
-import sangria.execution.deferred.{DeferredResolver, Fetcher, HasId}
+import sangria.execution.deferred.{DeferredResolver, Fetcher, HasId, Relation, RelationIds}
+import sangria.macros.derive.AddFields
 import sangria.schema._
 
 object GraphqlSchema {
-    val BookType = ObjectType[Unit, Book](
+    lazy val BookType = ObjectType[Unit, Book](
         "Book",
         fields[Unit, Book](
             Field("id", LongType, resolve = _.value.id),
@@ -15,20 +16,32 @@ object GraphqlSchema {
         )
     )
 
-    val AuthorType = ObjectType[Unit, Author](
+    lazy val AuthorType = ObjectType[Unit, Author](
         "Author",
         fields[Unit, Author](
             Field("id", LongType, resolve = _.value.id),
             Field("name", StringType, resolve = _.value.name),
-            Field("year", IntType, resolve = _.value.year)
+            Field("year", IntType, resolve = _.value.year),
+            Field("books",
+                ListType(BookType),
+                resolve = c => {
+                    booksFetcher.deferRelSeqMany(
+                        booksForAuthorsRelation,
+                        c.value.id.asInstanceOf[Seq[Long]]
+                    )
+                }
+            )
         )
     )
+
+    val booksForAuthorsRelation = Relation[Book, (Seq[Long], Book), Long]("forAuthors", _._1, _._2)
 
     implicit val bookHasId = HasId[Book, Long](_.id)
     implicit val authorHasId = HasId[Author, Long](_.id)
 
-    val booksFetcher = Fetcher(
-        (ctx: BookRepository, ids: Seq[Long]) => ctx.getBooks(ids)
+    val booksFetcher: Fetcher[BookRepository, Book, (Seq[Long], Book), Long] = Fetcher.relCaching(
+        (ctx: BookRepository, ids: Seq[Long]) => ctx.getBooks(ids),
+        (ctx: BookRepository, ids: RelationIds[Book]) => ctx.getForAuthors(ids(booksForAuthorsRelation))
     )
     val authorsFetcher = Fetcher(
         (ctx: BookRepository, ids: Seq[Long]) => ctx.getAuthors(ids)

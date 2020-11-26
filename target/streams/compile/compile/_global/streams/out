@@ -1,4 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/models/BookRepository.scala:46:29: unreachable code[0m
-[0m[[0m[31merror[0m] [0m[0m        case Seq() => db.run(books.result)[0m
-[0m[[0m[31merror[0m] [0m[0m                            ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/models/BookRepository.scala:53:9: private class BooksTable escapes its defining scope as part of type scala.concurrent.Future[scala.collection.immutable.Vector[(Seq[Long], BookRepository.this.BooksTable#TableElementType)]][0m
+[0m[[0m[31merror[0m] [0m[0m    def getForAuthors(ids: Seq[Long]) = {[0m
+[0m[[0m[31merror[0m] [0m[0m        ^[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m
