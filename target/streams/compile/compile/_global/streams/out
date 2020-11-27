@@ -1,4 +1,6 @@
-[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/models/GraphqlSchema.scala:16:26: Reference to uninitialized value AuthorType[0m
-[0m[[0m[31merror[0m] [0m[0m                ListType(AuthorType),[0m
-[0m[[0m[31merror[0m] [0m[0m                         ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/models/BookRepository.scala:71:23: missing parameter type for expanded function[0m
+[0m[[0m[31merror[0m] [0m[0mThe argument types of an anonymous function must be fully known. (SLS 8.5)[0m
+[0m[[0m[31merror[0m] [0m[0mExpected type was: scala.concurrent.Future[Seq[models.Author]][0m
+[0m[[0m[31merror[0m] [0m[0m        case Seq() => {[0m
+[0m[[0m[31merror[0m] [0m[0m                      ^[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m

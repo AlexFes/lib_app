@@ -73,11 +73,11 @@ class BookController @Inject()(repo: BookRepository,
                 throw error
         }
 
-    def getBooks = Action.async { implicit request =>
-        repo.getBooks().map { books =>
-            Ok(Json.toJson(books))
-        }
-    }
+//    def getBooks = Action.async { implicit request =>
+//        repo.getBooks().map { books =>
+//            Ok(Json.toJson(books))
+//        }
+//    }
 
     def setSchema = Action.async { implicit request =>
         repo.createSchema.map { _ =>  Redirect(routes.BookController.index).flashing("success" -> "schema.created") }

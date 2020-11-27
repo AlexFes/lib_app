@@ -41,11 +41,11 @@ object GraphqlSchema {
     implicit val authorHasId = HasId[Author, Long](_.id)
 
     val booksFetcher: Fetcher[BookRepository, Book, (Seq[Long], Book), Long] = Fetcher.relCaching(
-        (ctx: BookRepository, ids: Seq[Long]) => ctx.getBooks(ids),
+        (ctx: BookRepository, ids: Seq[Long]) => ctx.getBooks(ids, limit = None, offset = None),
         (ctx: BookRepository, ids: RelationIds[Book]) => ctx.getForAuthors(ids(booksForAuthorsRelation))
     )
     val authorsFetcher: Fetcher[BookRepository, Author, (Seq[Long], Author), Long] = Fetcher.relCaching(
-        (ctx: BookRepository, ids: Seq[Long]) => ctx.getAuthors(ids),
+        (ctx: BookRepository, ids: Seq[Long]) => ctx.getAuthors(ids, limit = None, offset = None),
         (ctx: BookRepository, ids: RelationIds[Author]) => ctx.getForBooks(ids(authorsForBooksRelation))
     )
 
@@ -55,14 +55,22 @@ object GraphqlSchema {
     val QueryType = ObjectType[BookRepository, Unit](
         "Query",
         fields[BookRepository, Unit](
-            Field("allBooks", ListType(BookType), resolve = c => c.ctx.getBooks()),
-            Field("books",
+            Field("allBooks",
+                ListType(BookType),
+                arguments = List(Argument("limit", OptionInputType(IntType)), Argument("offset", OptionInputType(IntType))),
+                resolve = c => c.ctx.getBooks(limit = c.argOpt[Int]("limit"), offset = c.argOpt[Int]("offset"))
+            ),
+            Field("booksById",
                 ListType(BookType),
                 arguments = List(Argument("ids", ListInputType(LongType))),
                 resolve = c => booksFetcher.deferSeq(c.arg[Seq[Long]]("ids"))
             ),
-            Field("allAuthors", ListType(AuthorType), resolve = c => c.ctx.getAuthors()),
-            Field("authors",
+            Field("allAuthors",
+                ListType(AuthorType),
+                arguments = List(Argument("limit", OptionInputType(IntType)), Argument("offset", OptionInputType(IntType))),
+                resolve = c => c.ctx.getAuthors(limit = c.argOpt[Int]("limit"), offset = c.argOpt[Int]("offset"))
+            ),
+            Field("authorsById",
                 ListType(AuthorType),
                 arguments = List(Argument("ids", ListInputType(LongType))),
                 resolve = c => authorsFetcher.deferSeq(c.arg[Seq[Long]]("ids"))

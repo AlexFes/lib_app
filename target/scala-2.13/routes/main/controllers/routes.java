@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/alexfes/Documents/scala_app/conf/routes
-// @DATE:Mon Nov 23 17:37:19 MSK 2020
+// @DATE:Fri Nov 27 14:01:42 MSK 2020
 
 package controllers;
 

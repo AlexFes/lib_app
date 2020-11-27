@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/alexfes/Documents/scala_app/conf/routes
-// @DATE:Mon Nov 23 17:37:19 MSK 2020
+// @DATE:Fri Nov 27 14:01:42 MSK 2020
 
 import play.api.mvc.Call
 
@@ -17,10 +17,16 @@ package controllers {
     }
 
   
-    // @LINE:8
-    def getBooks(): Call = {
+    // @LINE:9
+    def setSchema(): Call = {
       
-      Call("GET", _prefix + { _defaultPrefix } + "books")
+      Call("GET", _prefix + { _defaultPrefix } + "schema")
+    }
+  
+    // @LINE:6
+    def index(): Call = {
+      
+      Call("GET", _prefix)
     }
   
     // @LINE:11
@@ -29,22 +35,10 @@ package controllers {
       Call("GET", _prefix + { _defaultPrefix } + "graphql")
     }
   
-    // @LINE:9
-    def setSchema(): Call = {
-      
-      Call("GET", _prefix + { _defaultPrefix } + "schema")
-    }
-  
     // @LINE:12
     def graphqlBody(): Call = {
       
       Call("POST", _prefix + { _defaultPrefix } + "graphql")
-    }
-  
-    // @LINE:6
-    def index(): Call = {
-      
-      Call("GET", _prefix)
     }
   
   }

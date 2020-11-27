@@ -48,8 +48,11 @@ class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implic
 
     val relation = TableQuery[BookAuthorRelation]
 
-    def getBooks(ids: Seq[Long] = Seq()): Future[Seq[Book]] = ids match {
-        case Seq() => db.run(books.result)
+    def getBooks(ids: Seq[Long] = Seq(), limit: Option[Int], offset: Option[Int]): Future[Seq[Book]] = ids match {
+        case Seq() => limit match {
+            case l: Some[Int] => db.run(books.drop(offset getOrElse 0).take(l.get).result)
+            case None => db.run(books.drop(offset getOrElse 0).result)
+        }
         case s: Seq[Long] => db.run(books.filter(_.id inSet s).result)
     }
 
@@ -64,8 +67,11 @@ class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implic
         }
     }
 
-    def getAuthors(ids: Seq[Long] = Seq()): Future[Seq[Author]] = ids match {
-        case Seq() => db.run(authors.result)
+    def getAuthors(ids: Seq[Long] = Seq(), limit: Option[Int], offset: Option[Int]): Future[Seq[Author]] = ids match {
+        case Seq() => limit match {
+            case l: Some[Int] => db.run(authors.drop(offset getOrElse 0).take(l.get).result)
+            case None => db.run(authors.drop(offset getOrElse 0).result)
+        }
         case s: Seq[Long] => db.run(authors.filter(_.id inSet s).result)
     }
 
