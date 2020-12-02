@@ -3,7 +3,11 @@ package models
 import sangria.schema.{Field, ListType, ObjectType}
 import sangria.execution.deferred.{DeferredResolver, Fetcher, HasId, Relation, RelationIds}
 import sangria.macros.derive._
+import sangria.marshalling.FromInput
 import sangria.schema._
+import sangria.marshalling.sprayJson._
+import spray.json.DefaultJsonProtocol._
+import spray.json.RootJsonFormat
 
 object GraphqlSchema {
     lazy val BookType: ObjectType[Unit, Book] = deriveObjectType[Unit, Book](
@@ -78,28 +82,24 @@ object GraphqlSchema {
         )
     )
 
+    implicit val authorInputFormat: RootJsonFormat[AuthorInput] = jsonFormat2(AuthorInput)
+    lazy val AuthorInputType: InputObjectType[AuthorInput] = deriveInputObjectType[AuthorInput]()
+
+    implicit val bookInputFormat: RootJsonFormat[BookInput] = jsonFormat4(BookInput)
+    lazy val BookInputType: InputObjectType[BookInput] = deriveInputObjectType[BookInput]()
+
     val Mutation = ObjectType[BookRepository, Unit](
         "Mutation",
         fields[BookRepository, Unit](
             Field("createAuthor",
                 AuthorType,
-                arguments = List(Argument("name", StringType), Argument("year", IntType)),
-                resolve = c => c.ctx.createAuthor(c.arg[String]("name"), c.arg[Int]("year"))
+                arguments = List(Argument("authorForm", AuthorInputType)),
+                resolve = c => c.ctx.createAuthor(c.arg[AuthorInput]("authorForm"))
             ),
             Field("createBook",
                 BookType,
-                arguments = List(
-                    Argument("title", StringType),
-                    Argument("year", IntType),
-                    Argument("genre", StringType),
-                    Argument("authors", ListInputType(LongType))
-                ),
-                resolve = c => c.ctx.createBook(
-                    c.arg[String]("title"),
-                    c.arg[Int]("year"),
-                    c.arg[String]("genre"),
-                    c.arg[Seq[Long]]("authors")
-                )
+                arguments = List(Argument("bookForm", BookInputType)),
+                resolve = c => c.ctx.createBook(c.arg[BookInput]("bookForm"))
             )
         )
     )

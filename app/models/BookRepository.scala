@@ -86,15 +86,15 @@ class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implic
         }
     }
 
-    def createAuthor(name: String, year: Int) = db.run {
-        authors returning authors.map(_.id) into ((author, id) => Author(author.name, author.year, id)) += Author(name, year)
+    def createAuthor(authorForm: AuthorInput) = db.run {
+        authors returning authors.map(_.id) into ((author, id) => Author(author.name, author.year, id)) += Author(authorForm.name, authorForm.year)
     }
 
-    def createBook(title: String, year: Int, genre: String, authorIds: Seq[Long]) = {
+    def createBook(bookForm: BookInput) = {
         val res = for {
-            bookId <- books.returning(books.map(_.id)) += Book(title, year, genre)
-            _ <- relation ++= authorIds.map((bookId, _))
-        } yield Book(title, year, genre, bookId)
+            bookId <- books.returning(books.map(_.id)) += Book(bookForm.title, bookForm.year, bookForm.genre)
+            _ <- relation ++= bookForm.authors.map((bookId, _))
+        } yield Book(bookForm.title, bookForm.year, bookForm.genre, bookId)
 
         db.run(res.transactionally)
     }

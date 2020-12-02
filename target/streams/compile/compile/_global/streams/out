@@ -1,6 +1,6 @@
-[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/models/BookRepository.scala:71:23: missing parameter type for expanded function[0m
-[0m[[0m[31merror[0m] [0m[0mThe argument types of an anonymous function must be fully known. (SLS 8.5)[0m
-[0m[[0m[31merror[0m] [0m[0mExpected type was: scala.concurrent.Future[Seq[models.Author]][0m
-[0m[[0m[31merror[0m] [0m[0m        case Seq() => {[0m
-[0m[[0m[31merror[0m] [0m[0m                      ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/alexfes/Documents/scala_app/app/models/GraphqlSchema.scala:88:75: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : models.BookInput.type[0m
+[0m[[0m[31merror[0m] [0m[0m required: (?, ?) => models.BookInput[0m
+[0m[[0m[31merror[0m] [0m[0m    implicit val bookInputFormat: RootJsonFormat[BookInput] = jsonFormat2(BookInput)[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                          ^[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m
