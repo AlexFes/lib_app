@@ -45,24 +45,23 @@ object GraphqlSchema {
     implicit val authorHasId = HasId[Author, Long](_.id)
 
     val booksFetcher: Fetcher[BookRepository, Book, (Seq[Long], Book), Long] = Fetcher.relCaching(
-        (ctx: BookRepository, ids: Seq[Long]) => ctx.getBooks(ids, limit = None, offset = None),
+        (ctx: BookRepository, ids: Seq[Long]) => ctx.getBooks(ids),
         (ctx: BookRepository, ids: RelationIds[Book]) => ctx.getForAuthors(ids(booksForAuthorsRelation))
     )
     val authorsFetcher: Fetcher[BookRepository, Author, (Seq[Long], Author), Long] = Fetcher.relCaching(
-        (ctx: BookRepository, ids: Seq[Long]) => ctx.getAuthors(ids, limit = None, offset = None),
+        (ctx: BookRepository, ids: Seq[Long]) => ctx.getAuthors(ids),
         (ctx: BookRepository, ids: RelationIds[Author]) => ctx.getForBooks(ids(authorsForBooksRelation))
     )
 
     val Resolver = DeferredResolver.fetchers(booksFetcher, authorsFetcher)
-
 
     val QueryType = ObjectType[BookRepository, Unit](
         "Query",
         fields[BookRepository, Unit](
             Field("allBooks",
                 ListType(BookType),
-                arguments = List(Argument("limit", OptionInputType(IntType)), Argument("offset", OptionInputType(IntType))),
-                resolve = c => c.ctx.getBooks(limit = c.argOpt[Int]("limit"), offset = c.argOpt[Int]("offset"))
+                arguments = List(Argument("limit", OptionInputType(IntType), 10), Argument("offset", OptionInputType(IntType), 0)),
+                resolve = c => c.ctx.getBooks(limit = c.arg[Int]("limit"), offset = c.arg[Int]("offset"))
             ),
             Field("booksById",
                 ListType(BookType),
@@ -71,8 +70,8 @@ object GraphqlSchema {
             ),
             Field("allAuthors",
                 ListType(AuthorType),
-                arguments = List(Argument("limit", OptionInputType(IntType)), Argument("offset", OptionInputType(IntType))),
-                resolve = c => c.ctx.getAuthors(limit = c.argOpt[Int]("limit"), offset = c.argOpt[Int]("offset"))
+                arguments = List(Argument("limit", OptionInputType(IntType), 10), Argument("offset", OptionInputType(IntType), 0)),
+                resolve = c => c.ctx.getAuthors(limit = c.arg[Int]("limit"), offset = c.arg[Int]("offset"))
             ),
             Field("authorsById",
                 ListType(AuthorType),
