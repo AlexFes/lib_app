@@ -10,7 +10,18 @@ import spray.json.DefaultJsonProtocol._
 import spray.json.RootJsonFormat
 
 object GraphqlSchema {
+    val GenreEnum = EnumType("Genre",
+        values = List(
+            EnumValue("DRAMA", value = "Drama"),
+            EnumValue("ADVENTURE", value = "Adventure"),
+            EnumValue("HORROR", value = "Horror")
+        )
+    )
+
     lazy val BookType: ObjectType[Unit, Book] = deriveObjectType[Unit, Book](
+        ReplaceField("genre",
+            Field("genre", GenreEnum, resolve = _.value.genre)
+        ),
         AddFields(
             Field("authors",
                 ListType(AuthorType),
@@ -99,6 +110,32 @@ object GraphqlSchema {
                 BookType,
                 arguments = List(Argument("bookForm", BookInputType)),
                 resolve = c => c.ctx.createBook(c.arg[BookInput]("bookForm"))
+            ),
+            Field("updateAuthor",
+                IntType,
+                arguments = List(
+                    Argument("id", LongType),
+                    Argument("authorForm", AuthorInputType)
+                ),
+                resolve = c => c.ctx.updateAuthor(c.arg[Long]("id"), c.arg[AuthorInput]("authorForm"))
+            ),
+            Field("updateBook",
+                IntType,
+                arguments = List(
+                    Argument("id", LongType),
+                    Argument("bookForm", BookInputType)
+                ),
+                resolve = c => c.ctx.updateBook(c.arg[Long]("id"), c.arg[BookInput]("bookForm"))
+            ),
+            Field("deleteAuthor",
+                IntType,
+                arguments = List(Argument("id", LongType)),
+                resolve = c => c.ctx.deleteAuthor(c.arg[Long]("id"))
+            ),
+            Field("deleteBook",
+                IntType,
+                arguments = List(Argument("id", LongType)),
+                resolve = c => c.ctx.deleteBook(c.arg[Long]("id"))
             )
         )
     )

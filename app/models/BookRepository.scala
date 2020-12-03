@@ -81,7 +81,8 @@ class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implic
     }
 
     def createAuthor(authorForm: AuthorInput) = db.run {
-        authors returning authors.map(_.id) into ((author, id) => Author(author.name, author.year, id)) += Author(authorForm.name, authorForm.year)
+        authors returning authors.map(_.id) into
+          ((author, id) => Author(author.name, author.year, id)) += Author(authorForm.name, authorForm.year)
     }
 
     def createBook(bookForm: BookInput) = {
@@ -93,9 +94,31 @@ class BookRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implic
         db.run(res.transactionally)
     }
 
+    def updateAuthor(authorId: Long, authorForm: AuthorInput) = db.run {
+        authors.filter(_.id === authorId)
+          .map(a => (a.name, a.year).mapTo[AuthorInput])
+          .update(authorForm)
+    }
+
+    def updateBook(bookId: Long, bookForm: BookInput) = {
+        val updateBookAction = books.filter(_.id === bookId)
+          .map(b => (b.title, b.year, b.genre))
+          .update((bookForm.title, bookForm.year, bookForm.genre))
+
+        db.run {
+            relation.filter(_.book === bookId).delete andThen
+              (relation ++= bookForm.authors.map((bookId, _))) andThen
+              updateBookAction
+        }
+    }
+
+    def deleteAuthor(authorId: Long) = db.run(authors.filter(_.id === authorId).delete)
+
+    def deleteBook(bookId: Long) = db.run(books.filter(_.id === bookId).delete)
+
     def createSchema = db.run {
-        books.schema.create andThen
-        authors.schema.create andThen
-        relation.schema.create
+        books.schema.drop andThen books.schema.create andThen
+          authors.schema.drop andThen authors.schema.create andThen
+          relation.schema.drop andThen relation.schema.create
     }
 }
